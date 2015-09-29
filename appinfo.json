@@ -1,0 +1,73 @@
+{
+  "uuid": "ed70b15c-3c48-3434-eeee-ffff28efb38d",
+  "shortName": "Tutorial-3-3",
+  "longName": "Tutorial-3-3",
+  "companyName": "Pebble",
+  "versionCode": 1,
+  "versionLabel": "1.0",
+  "watchapp": {
+    "watchface": true
+  },
+  "appKeys": {
+    "KEY_TEMPERATURE": 0,
+    "KEY_CONDITIONS": 1
+  },
+  "capabilities": [
+    "location"
+  ],
+  "resources": {
+    "media": [
+      {
+        "type": "font",
+        "name": "FONT_PERFECT_DOS_48",
+        "file": "perfect-dos-vga.ttf",
+        "compatibility": "2.7"
+      },
+      {
+        "type": "font",
+        "name": "FONT_PERFECT_DOS_20",
+        "file": "perfect-dos-vga.ttf",
+        "compatibility": "2.7"
+      },
+      {
+        "type": "png",
+        "name": "IMAGE_BACKGROUND1",
+        "file": "background.png"
+      },
+      {
+        "file": "images/canucks_background.png",
+        "name": "IMAGE_BACKGROUND",
+        "type": "png"
+      },
+      {
+        "file": "images/battery.png",
+        "name": "IMAGE_BATTERY",
+        "type": "png"
+      },
+      {
+        "file": "fonts/NHL Vancouver Canucks.ttf",
+        "name": "FONT_NHL_VAN_24",
+        "type": "font"
+      },
+      {
+        "file": "fonts/NHL Vancouver Canucks.ttf",
+        "name": "FONT_NHL_VAN_28",
+        "type": "font"
+      },
+      {
+        "file": "fonts/NHL Vancouver Canucks.ttf",
+        "name": "FONT_NHL_VAN_22",
+        "type": "font"
+      },
+      {
+        "file": "fonts/NHL Vancouver Canucks.ttf",
+        "name": "FONT_NHL_VAN_64",
+        "type": "font"
+      }
+    ]
+  },
+  "targetPlatforms": [
+    "basalt"
+  ],
+  "sdkVersion": "3"
+}
