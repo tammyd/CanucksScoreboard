@@ -242,9 +242,9 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
     t = dict_read_next(iterator);
   }
 
-  // Assemble full string and display
-  snprintf(weather_layer_buffer, sizeof(weather_layer_buffer), "%s, %s", temperature_buffer, conditions_buffer);
-  text_layer_set_text(s_temperature_layer, weather_layer_buffer);
+  //display
+  text_layer_set_text(s_battery_layer, temperature_buffer);
+  text_layer_set_text(s_temperature_layer, conditions_buffer);
 }
 
 static void inbox_dropped_callback(AppMessageResult reason, void *context) {
