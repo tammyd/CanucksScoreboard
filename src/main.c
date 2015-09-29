@@ -19,8 +19,6 @@ static GFont        s_date_font;          // date display font
 static GFont        s_colon_font;         // time colon display font
 static GBitmap     *s_background_image;   // background image
 static BitmapLayer *s_background_layer;   // background image container
-static GBitmap     *s_battery_image;       // battery image
-static BitmapLayer *s_battery_img_layer;  // battery image container
 
 //static char temperature_buffer[8];        // text buffer to hold temperature
 
@@ -62,11 +60,6 @@ static void create_battery_layer() {
   text_layer_set_text_alignment(s_battery_layer, GTextAlignmentLeft);
   text_layer_set_font(s_battery_layer, s_temperature_font);
   text_layer_set_text(s_battery_layer, "    ");
-
-  s_battery_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BATTERY);
-  s_battery_img_layer = bitmap_layer_create(GRect(22, 128, 24, 24));
-  bitmap_layer_set_background_color(s_battery_img_layer, GColorClear);
-  bitmap_layer_set_bitmap(s_battery_img_layer, s_battery_image);
 }
 
 // build up the pieces that display the time information
@@ -161,7 +154,6 @@ static void main_window_load(Window *window) {
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_battery_layer));
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_date_layer));
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_battery_layer));
-  layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_battery_img_layer));
 }
 
 // Cleanup time data structures
@@ -173,8 +165,6 @@ static void unload_time_layer() {
 }
 
 static void unload_battery_layer() {
-  bitmap_layer_destroy(s_battery_img_layer);
-  gbitmap_destroy(s_battery_image);
   text_layer_destroy(s_battery_layer);
   fonts_unload_custom_font(s_battery_font);
 }

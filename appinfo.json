@@ -35,11 +35,6 @@
         "type": "png"
       },
       {
-        "file": "images/battery.png",
-        "name": "IMAGE_BATTERY",
-        "type": "png"
-      },
-      {
         "file": "fonts/NHL Vancouver Canucks.ttf",
         "name": "FONT_NHL_VAN_24",
         "type": "font"
