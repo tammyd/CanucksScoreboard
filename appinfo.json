@@ -30,11 +30,6 @@
         "compatibility": "2.7"
       },
       {
-        "type": "png",
-        "name": "IMAGE_BACKGROUND1",
-        "file": "background.png"
-      },
-      {
         "file": "images/canucks_background.png",
         "name": "IMAGE_BACKGROUND",
         "type": "png"

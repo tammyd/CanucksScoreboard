@@ -26,7 +26,7 @@ static BitmapLayer *s_battery_img_layer;  // battery image container
 
 // static bool s_configTempF = false;
 // static bool s_configShowBattery = true;
-// static bool s_configForce24H = true;
+static bool s_configForce24H = true;
 
 // define all the fonts used
 static void load_fonts() {
@@ -103,26 +103,45 @@ static void create_date_layer() {
   text_layer_set_text_alignment(s_date_layer, GTextAlignmentCenter);
 }
 
-static void update_time() {
-  // Get a tm structure
+// update the date text
+static void update_date() {
+  APP_LOG(APP_LOG_LEVEL_INFO, "update_date()");
+  // build and populate the time structure
   time_t temp = time(NULL);
   struct tm *tick_time = localtime(&temp);
 
   // Create a long-lived buffer
-  static char buffer[] = "00:00";
+  static char date_buffer[] = "WED JUN 30"; //using this as a placeholder example date
 
-  // Write the current hours and minutes into the buffer
-  if(clock_is_24h_style() == true) {
-    //Use 2h hour format
-    strftime(buffer, sizeof("00:00"), "%H:%M", tick_time);
-  } else {
-    //Use 12 hour format
-    strftime(buffer, sizeof("00:00"), "%I:%M", tick_time);
-  }
-
-  // Display this time on the TextLayer
-  text_layer_set_text(s_hour_layer, buffer);
+  //update the date's string buffer with formatted date
+  strftime(date_buffer, sizeof("WED JUN 30"), "%a %b %d", tick_time);
+  text_layer_set_text(s_date_layer, date_buffer);
 }
+
+
+static void update_time() {
+  APP_LOG(APP_LOG_LEVEL_INFO, "update_time()");
+  // build and populate the time structure
+  time_t temp = time(NULL);
+  struct tm *tick_time = localtime(&temp);
+
+  // Create 2 long-lived buffers for the hour and min
+  static char hour_buffer[] = "23";
+  static char min_buffer[] = "59";
+
+  //update the hour and min buffers with formatted values from the time strucure
+  if (!clock_is_24h_style() && !s_configForce24H) {
+    strftime(hour_buffer, sizeof("00"), "%I", tick_time);
+  } else {
+    strftime(hour_buffer, sizeof("00"), "%H", tick_time);
+  }
+  strftime(min_buffer, sizeof("00"), "%M", tick_time);
+
+  //update the display's hour and min layers with the formatted values
+  text_layer_set_text(s_hour_layer, hour_buffer);
+  text_layer_set_text(s_min_layer, min_buffer);
+}
+
 
 // Load up the main window
 static void main_window_load(Window *window) {
@@ -189,6 +208,7 @@ static void main_window_unload(Window *window) {
 
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
   update_time();
+  update_date();
 
   // Get weather update every 30 minutes
   if(tick_time->tm_min % 30 == 0) {
