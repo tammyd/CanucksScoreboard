@@ -1,8 +1,8 @@
 {
   "uuid": "ed70b15c-e367-3434-eeee-ffff28efb38d",
-  "shortName": "VAN Scoreboard",
-  "longName": "VAN Scoreboard",
-  "companyName": "BlackPawTech.ca",
+  "shortName": "NHL Scoreboard",
+  "longName": "NHL Scoreboard",
+  "companyName": "tammyd.ca",
   "versionCode": 1,
   "versionLabel": "1.0",
   "watchapp": {
@@ -10,7 +10,8 @@
   },
   "appKeys": {
     "KEY_TEMPERATURE": 0,
-    "KEY_CONDITIONS": 1
+    "KEY_CONDITIONS": 1,
+    "KEY_CONFIG_TEMP_UNIT_F": 2
   },
   "capabilities": [
     "location"

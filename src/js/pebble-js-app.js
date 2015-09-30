@@ -1,3 +1,48 @@
+// Page for app configuration
+Pebble.addEventListener('showConfiguration', function(e) {
+  var encodeQueryData = function (data)
+  {
+      return Object.keys(data).map(function(key) {
+         return [key, data[key]].map(encodeURIComponent).join("=");
+     }).join("&");
+  };
+
+  var baseUrl = 'http://tammyd.github.io/NHLScoreboard2/config/nhlscoreboard.html';
+  var params = {
+    'tempUnitF' : getFromLocalStorage(KEY_CONFIG_TEMP_UNIT_F, false),
+  };
+  var url = baseUrl + "?" + encodeQueryData(params);
+  console.log("Loading: " + url);
+  ga.trackEvent('config', 'opened');
+
+  Pebble.openURL(url);
+});
+
+Pebble.addEventListener('webviewclosed',
+  function(e) {
+    var configuration = JSON.parse(decodeURIComponent(e.response));
+    console.log('Configuration window returned: ' + JSON.stringify(configuration));
+
+    var tempInF = configuration.tempUnitF ? true : false;
+
+    setToLocalStorage(KEY_CONFIG_TEMP_UNIT_F, tempInF);
+
+    // Send to Pebble
+    Pebble.sendAppMessage({
+      KEY_CONFIG_TEMP_UNIT_F : tempInF,
+    },
+      function(e) {
+        console.log("Weather info sent to Pebble successfully!");
+      },
+      function(e) {
+        console.log("Error sending weather info to Pebble!");
+      }
+    );
+
+    getWeather();
+  }
+);
+
 var xhrRequest = function (url, type, callback) {
   var xhr = new XMLHttpRequest();
   xhr.onload = function () {

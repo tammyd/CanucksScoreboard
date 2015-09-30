@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta content="NHL Scoreboard for Pebble Time -- Congfiguration" name="description">
+    <meta content="tammyd.ca" name="author">
+
+    <title>NHL Scoreboard</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-switch.min.css" rel="stylesheet">
+    <link href="css/common.css" rel="stylesheet">
+  </head>
+  <body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">NHL Scoreboard</a>
+        </div>
+<!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container container__content">
+<!-- @TODO - put banner of screenshots -->
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Settings</h3>
+        </div>
+        <div class="panel-body">
+          <form>
+          <div class="row">
+            <div class="col-xs-9"><label>Temperature Units:</label></div>
+            <div class="col-xs-3">
+              <p class='pull-right'>
+                <input checked
+                  data-on-text="°F"
+                  data-off-text="°C"
+                  data-on-color='success'
+                  data-off-color='info'
+                  id="tempSwitch"
+                  type="checkbox"
+                  data-label-width=24
+                  data-handle-width=24
+                  >
+              </p>
+            </div>
+          </div>
+          <button type="submit" onclick="return config.submit()" class="btn btn-default pull-left">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div> <!-- /.container -->
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="js/bootstrap-switch.min.js"></script>
+    <script src="js/nhlscoreboard.js"></script>
+  </body>
+</html>

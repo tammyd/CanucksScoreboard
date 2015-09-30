@@ -4,6 +4,7 @@
 
 #define KEY_TEMPERATURE 0
 #define KEY_CONDITIONS 1
+#define KEY_CONFIG_TEMP_UNIT_F 2
 
 static Window      *s_main_window;        // main window
 static TextLayer   *s_temperature_layer;  // text layer displaying temperature
@@ -22,11 +23,7 @@ static GFont        s_colon_font;         // time colon display font
 static GBitmap     *s_background_image;   // background image
 static BitmapLayer *s_background_layer;   // background image container
 
-//static char temperature_buffer[8];        // text buffer to hold temperature
-
-// static bool s_configTempF = false;
-// static bool s_configShowBattery = true;
-static bool s_configForce24H = true;
+static bool s_configTempF = false;
 
 // define all the fonts used
 static void load_fonts() {
@@ -228,21 +225,24 @@ static void main_window_unload(Window *window) {
   unload_battery_layer();
 }
 
+static void update_weather() {
+  DictionaryIterator *iter;
+  app_message_outbox_begin(&iter);
+
+  // Add a key-value pair
+  dict_write_uint8(iter, 0, 0);
+
+  // Send the message!
+  app_message_outbox_send();
+}
+
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
   update_time();
   update_date();
 
   // Get weather update every 30 minutes
   if(tick_time->tm_min % 30 == 0) {
-    // Begin dictionary
-    DictionaryIterator *iter;
-    app_message_outbox_begin(&iter);
-
-    // Add a key-value pair
-    dict_write_uint8(iter, 0, 0);
-
-    // Send the message!
-    app_message_outbox_send();
+    update_weather();
   }
 }
 
@@ -260,11 +260,22 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
     // Which key was received?
     switch(t->key) {
     case KEY_TEMPERATURE:
-      snprintf(temperature_buffer, sizeof(temperature_buffer), "%dC", (int)t->value->int32);
+      int degC = (int)t->value->int32;
+      if (s_configTempF) {
+        int degF = (degC * (9 / 5)) + 32;
+        snprintf(temperature_buffer, sizeof(temperature_buffer), "%dF", degF);
+      } else {
+        snprintf(temperature_buffer, sizeof(temperature_buffer), "%dC", degC);
+      }
+      text_layer_set_text(s_battery_layer, temperature_buffer);
       break;
     case KEY_CONDITIONS:
       snprintf(conditions_buffer, sizeof(conditions_buffer), "%s", t->value->cstring);
+      text_layer_set_text(s_temperature_layer, conditions_buffer);
       break;
+    case KEY_CONFIG_TEMP_UNIT_F:
+      s_configTempF = (bool)t->value->int32;
+      update_weather();
     default:
       APP_LOG(APP_LOG_LEVEL_ERROR, "Key %d not recognized!", (int)t->key);
       break;
@@ -273,10 +284,6 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
     // Look for next item
     t = dict_read_next(iterator);
   }
-
-  //display
-  text_layer_set_text(s_battery_layer, temperature_buffer);
-  text_layer_set_text(s_temperature_layer, conditions_buffer);
 }
 
 static void inbox_dropped_callback(AppMessageResult reason, void *context) {
