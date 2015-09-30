@@ -251,6 +251,8 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
   static char temperature_buffer[8];
   static char conditions_buffer[32];
   static char weather_layer_buffer[32];
+  static int degC = 0;
+  static int degF = 0;
 
   // Read first item
   Tuple *t = dict_read_first(iterator);
@@ -259,26 +261,26 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
   while(t != NULL) {
     // Which key was received?
     switch(t->key) {
-    case KEY_TEMPERATURE:
-      int degC = (int)t->value->int32;
-      if (s_configTempF) {
-        int degF = (degC * (9 / 5)) + 32;
-        snprintf(temperature_buffer, sizeof(temperature_buffer), "%dF", degF);
-      } else {
-        snprintf(temperature_buffer, sizeof(temperature_buffer), "%dC", degC);
-      }
-      text_layer_set_text(s_battery_layer, temperature_buffer);
-      break;
-    case KEY_CONDITIONS:
-      snprintf(conditions_buffer, sizeof(conditions_buffer), "%s", t->value->cstring);
-      text_layer_set_text(s_temperature_layer, conditions_buffer);
-      break;
-    case KEY_CONFIG_TEMP_UNIT_F:
-      s_configTempF = (bool)t->value->int32;
-      update_weather();
-    default:
-      APP_LOG(APP_LOG_LEVEL_ERROR, "Key %d not recognized!", (int)t->key);
-      break;
+      case KEY_TEMPERATURE:
+        degC = (int)t->value->int32;
+        if (s_configTempF) {
+          degF = (degC * (9 / 5)) + 32;
+          snprintf(temperature_buffer, sizeof(temperature_buffer), "%dF", degF);
+        } else {
+          snprintf(temperature_buffer, sizeof(temperature_buffer), "%dC", degC);
+        }
+        text_layer_set_text(s_battery_layer, temperature_buffer);
+        break;
+      case KEY_CONDITIONS:
+        snprintf(conditions_buffer, sizeof(conditions_buffer), "%s", t->value->cstring);
+        text_layer_set_text(s_temperature_layer, conditions_buffer);
+        break;
+      case KEY_CONFIG_TEMP_UNIT_F:
+        s_configTempF = (bool)t->value->int32;
+        update_weather();
+      default:
+        APP_LOG(APP_LOG_LEVEL_ERROR, "Key %d not recognized!", (int)t->key);
+        break;
     }
 
     // Look for next item
