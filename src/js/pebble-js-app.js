@@ -43,6 +43,26 @@ Pebble.addEventListener('webviewclosed',
   }
 );
 
+var getFromLocalStorage = function(key, defaultValue) {
+  var value = localStorage.getItem(key);
+
+  if (value=="True" || value=="true") {
+    value = true;
+  }
+  if (value=="False" || value=="false") {
+    value = false;
+  }
+  if (value === null) {
+    value = defaultValue;
+  }
+
+  return value;
+};
+
+var setToLocalStorage = function(key, value) {
+  localStorage.setItem(key, value);
+};
+
 var xhrRequest = function (url, type, callback) {
   var xhr = new XMLHttpRequest();
   xhr.onload = function () {
