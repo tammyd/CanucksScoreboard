@@ -1,8 +1,8 @@
 {
-  "uuid": "ed70b15c-3c48-3434-eeee-ffff28efb38d",
-  "shortName": "Tutorial-3-3",
-  "longName": "Tutorial-3-3",
-  "companyName": "Pebble",
+  "uuid": "ed70b15c-e367-3434-eeee-ffff28efb38d",
+  "shortName": "VAN Scoreboard",
+  "longName": "VAN Scoreboard",
+  "companyName": "BlackPawTech.ca",
   "versionCode": 1,
   "versionLabel": "1.0",
   "watchapp": {

@@ -7,8 +7,10 @@
 
 static Window      *s_main_window;        // main window
 static TextLayer   *s_temperature_layer;  // text layer displaying temperature
-static TextLayer   *s_hour_layer;         // text layer displaying hours
-static TextLayer   *s_min_layer;          // text layer displaying minutes
+static TextLayer   *s_hour_layer0;         // text layer displaying hours
+static TextLayer   *s_min_layer0;          // text layer displaying minutes
+static TextLayer   *s_hour_layer1;         // text layer displaying hours
+static TextLayer   *s_min_layer1;          // text layer displaying minutes
 static TextLayer   *s_colon_layer;        // text layer displaying colon
 static TextLayer   *s_date_layer;         // text layer
 static TextLayer   *s_battery_layer;      // text layer displaying battery
@@ -54,7 +56,7 @@ static void create_weather_layer() {
 }
 
 static void create_battery_layer() {
-  s_battery_layer = text_layer_create(GRect(22, 126, 50, 50)); //GRect: x,y,w,h
+  s_battery_layer = text_layer_create(GRect(22, 126, 30, 50)); //GRect: x,y,w,h
   text_layer_set_background_color(s_battery_layer, GColorClear);
   text_layer_set_text_color(s_battery_layer, GColorWhite);
   text_layer_set_text_alignment(s_battery_layer, GTextAlignmentLeft);
@@ -64,18 +66,33 @@ static void create_battery_layer() {
 
 // build up the pieces that display the time information
 static void create_time_layer() {
-  s_hour_layer = text_layer_create(GRect(0, 10, 68, 70)); //GRect: x,y,w,h
-  s_min_layer = text_layer_create(GRect(76, 10, 68, 70));
-  text_layer_set_background_color(s_hour_layer, GColorClear);
-  text_layer_set_background_color(s_min_layer, GColorClear);
-  text_layer_set_text_color(s_hour_layer, GColorWhite);
-  text_layer_set_text_color(s_min_layer, GColorWhite);
-  text_layer_set_text(s_hour_layer, "23");
-  text_layer_set_text(s_min_layer, "59");
-  text_layer_set_font(s_hour_layer, s_time_font);
-  text_layer_set_font(s_min_layer, s_time_font);
-  text_layer_set_text_alignment(s_hour_layer, GTextAlignmentRight);
-  text_layer_set_text_alignment(s_min_layer, GTextAlignmentLeft);
+
+  s_hour_layer0 = text_layer_create(GRect(22, 10, 30, 70)); //GRect: x,y,w,h
+  s_hour_layer1 = text_layer_create(GRect(45, 10, 30, 70)); //GRect: x,y,w,h
+
+  s_min_layer0 = text_layer_create(GRect(76, 10, 30, 70));
+  s_min_layer1 = text_layer_create(GRect(99, 10, 30, 70));
+
+  text_layer_set_background_color(s_hour_layer0, GColorClear);
+  text_layer_set_background_color(s_hour_layer1, GColorClear);
+  text_layer_set_background_color(s_min_layer0, GColorClear);
+  text_layer_set_background_color(s_min_layer1, GColorClear);
+  text_layer_set_text_color(s_hour_layer0, GColorWhite);
+  text_layer_set_text_color(s_hour_layer1, GColorWhite);
+  text_layer_set_text_color(s_min_layer0, GColorWhite);
+  text_layer_set_text_color(s_min_layer1, GColorWhite);
+  text_layer_set_text(s_hour_layer0, " ");
+  text_layer_set_text(s_hour_layer1, " ");
+  text_layer_set_text(s_min_layer0, "  ");
+  text_layer_set_text(s_min_layer1, "  ");
+  text_layer_set_font(s_hour_layer0, s_time_font);
+  text_layer_set_font(s_hour_layer1, s_time_font);
+  text_layer_set_font(s_min_layer0, s_time_font);
+  text_layer_set_font(s_min_layer1, s_time_font);
+  text_layer_set_text_alignment(s_hour_layer0, GTextAlignmentLeft);
+  text_layer_set_text_alignment(s_hour_layer1, GTextAlignmentLeft);
+  text_layer_set_text_alignment(s_min_layer0, GTextAlignmentLeft);
+  text_layer_set_text_alignment(s_min_layer1, GTextAlignmentLeft);
 
   s_colon_layer = text_layer_create(GRect(68, 30, 6, 70));
   text_layer_set_background_color(s_colon_layer, GColorClear);
@@ -119,20 +136,31 @@ static void update_time() {
   struct tm *tick_time = localtime(&temp);
 
   // Create 2 long-lived buffers for the hour and min
-  static char hour_buffer[] = "23";
-  static char min_buffer[] = "59";
+  static char hour_buffer[] = "00";
+  static char min_buffer[] = "00";
 
   //update the hour and min buffers with formatted values from the time strucure
-  if (!clock_is_24h_style() && !s_configForce24H) {
+  if (!clock_is_24h_style()) {
     strftime(hour_buffer, sizeof("00"), "%I", tick_time);
   } else {
     strftime(hour_buffer, sizeof("00"), "%H", tick_time);
   }
   strftime(min_buffer, sizeof("00"), "%M", tick_time);
 
+  static char hour0[] = "0";
+  static char hour1[] = "0";
+  static char min0[] = "0";
+  static char min1[] = "0";
+  strncpy(hour0, hour_buffer, 1);
+  strncpy(hour1, hour_buffer+1, 1);
+  strncpy(min0, min_buffer, 1);
+  strncpy(min1, min_buffer+1, 1);
+
   //update the display's hour and min layers with the formatted values
-  text_layer_set_text(s_hour_layer, hour_buffer);
-  text_layer_set_text(s_min_layer, min_buffer);
+  text_layer_set_text(s_hour_layer0, hour0);
+  text_layer_set_text(s_hour_layer1, hour1);
+  text_layer_set_text(s_min_layer0, min0);
+  text_layer_set_text(s_min_layer1, min1);
 }
 
 
@@ -147,8 +175,10 @@ static void main_window_load(Window *window) {
 
   // Add each layer as a child layer to the Window's root layer
   layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_background_layer));
-  layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_hour_layer));
-  layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_min_layer));
+  layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_hour_layer0));
+  layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_hour_layer1));
+  layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_min_layer0));
+  layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_min_layer1));
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_colon_layer));
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_temperature_layer));
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_battery_layer));
@@ -158,8 +188,10 @@ static void main_window_load(Window *window) {
 
 // Cleanup time data structures
 static void unload_time_layer() {
-  text_layer_destroy(s_hour_layer);
-  text_layer_destroy(s_min_layer);
+  text_layer_destroy(s_hour_layer0);
+  text_layer_destroy(s_hour_layer1);
+  text_layer_destroy(s_min_layer0);
+  text_layer_destroy(s_min_layer1);
   text_layer_destroy(s_colon_layer);
   fonts_unload_custom_font(s_time_font);
 }
