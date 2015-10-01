@@ -15,7 +15,6 @@ Pebble.addEventListener('showConfiguration', function(e) {
   };
   var url = baseUrl + "?" + encodeQueryData(params);
   console.log("Loading: " + url);
-
   Pebble.openURL(url);
 });
 
