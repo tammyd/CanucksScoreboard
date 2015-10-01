@@ -125,6 +125,20 @@ static void update_date() {
   text_layer_set_text(s_date_layer, date_buffer);
 }
 
+static void _setNumberLayerAlignment(char *value, TextLayer *layer) {
+  int ival = atoi(value);
+  if (ival == 0) {
+    text_layer_set_text_alignment(layer, GTextAlignmentCenter);
+  } else {
+    text_layer_set_text_alignment(layer, GTextAlignmentLeft);
+  }
+}
+static void _setLayerAlignment(char *hour0, char *hour1, char *min0, char *min1) {
+  _setNumberLayerAlignment(hour0, s_hour_layer0);
+  _setNumberLayerAlignment(hour1, s_hour_layer1);
+  _setNumberLayerAlignment(min0, s_min_layer0);
+  _setNumberLayerAlignment(min1, s_min_layer1);
+}
 
 static void update_time() {
   APP_LOG(APP_LOG_LEVEL_INFO, "update_time()");
@@ -154,27 +168,13 @@ static void update_time() {
   strncpy(min1, min_buffer+1, 1);
 
   //update the display's hour and min layers with the formatted values
-  setLayerAlignment(hour0, hour1, min0, min1);
+  _setLayerAlignment(hour0, hour1, min0, min1);
   text_layer_set_text(s_hour_layer0, hour0);
   text_layer_set_text(s_hour_layer1, hour1);
   text_layer_set_text(s_min_layer0, min0);
   text_layer_set_text(s_min_layer1, min1);
 }
 
-static void setLayerAlignment(hour0, hour1, min0, min1) {
-  setNumberLayerAlignment(hour0, s_hour_layer0);
-  setNumberLayerAlignment(hour1, s_hour_layer1);
-  setNumberLayerAlignment(min0, s_min_layer0);
-  setNumberLayerAlignment(min1, s_min_layer1);
-}
-
-static void setNumberLayerAlignment(value, layer) {
-  if (value == 0) {
-    text_layer_set_text_alignment(layer, GTextAlignmentCenter);
-  } else {
-    text_layer_set_text_alignment(s_min_layer1, GTextAlignmentLeft);
-  }
-}
 
 // Load up the main window
 static void main_window_load(Window *window) {
