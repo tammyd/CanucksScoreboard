@@ -1,4 +1,4 @@
-var const KEY_CONFIG_TEMP_UNIT_F = 'KEY_CONFIG_TEMP_UNIT_F';
+var KEY_CONFIG_TEMP_UNIT_F = 'KEY_CONFIG_TEMP_UNIT_F';
 
 // Page for app configuration
 Pebble.addEventListener('showConfiguration', function(e) {
@@ -15,7 +15,6 @@ Pebble.addEventListener('showConfiguration', function(e) {
   };
   var url = baseUrl + "?" + encodeQueryData(params);
   console.log("Loading: " + url);
-  ga.trackEvent('config', 'opened');
 
   Pebble.openURL(url);
 });
@@ -48,10 +47,10 @@ Pebble.addEventListener('webviewclosed',
 var getFromLocalStorage = function(key, defaultValue) {
   var value = localStorage.getItem(key);
 
-  if (value=="True" || value=="true" || value == 1 || value == true) {
+  if (value=="True" || value=="true") {
     value = true;
   }
-  if (value=="False" || value=="false"  || value == 1 || value == true) {
+  if (value=="False" || value=="false") {
     value = false;
   }
   if (value === null) {
