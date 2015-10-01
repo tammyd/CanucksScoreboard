@@ -1,3 +1,5 @@
+var const KEY_CONFIG_TEMP_UNIT_F = 'KEY_CONFIG_TEMP_UNIT_F';
+
 // Page for app configuration
 Pebble.addEventListener('showConfiguration', function(e) {
   var encodeQueryData = function (data)
@@ -46,10 +48,10 @@ Pebble.addEventListener('webviewclosed',
 var getFromLocalStorage = function(key, defaultValue) {
   var value = localStorage.getItem(key);
 
-  if (value=="True" || value=="true") {
+  if (value=="True" || value=="true" || value == 1 || value == true) {
     value = true;
   }
-  if (value=="False" || value=="false") {
+  if (value=="False" || value=="false"  || value == 1 || value == true) {
     value = false;
   }
   if (value === null) {
