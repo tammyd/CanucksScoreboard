@@ -127,8 +127,8 @@ static void update_date() {
 
 static void _setNumberLayerAlignment(char *value, TextLayer *layer) {
   int ival = atoi(value);
-  if (ival == 0) {
-    APP_LOG(APP_LOG_LEVEL_INFO, "%d Value is 0, centering...", ival);
+  if (ival == 1) {
+    APP_LOG(APP_LOG_LEVEL_INFO, "%d Value is 1, centering...", ival);
     text_layer_set_text_alignment(layer, GTextAlignmentCenter);
   } else {
     APP_LOG(APP_LOG_LEVEL_INFO, "%d Value is NOT 0, lefting...", ival);
