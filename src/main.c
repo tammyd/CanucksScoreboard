@@ -7,17 +7,17 @@
 #define KEY_CONFIG_TEMP_UNIT_F 2
 
 static Window      *s_main_window;        // main window
-static TextLayer   *s_temperature_layer;  // text layer displaying temperature
-static TextLayer   *s_hour_layer0;         // text layer displaying hours
-static TextLayer   *s_min_layer0;          // text layer displaying minutes
-static TextLayer   *s_hour_layer1;         // text layer displaying hours
-static TextLayer   *s_min_layer1;          // text layer displaying minutes
+static TextLayer   *s_conditions_layer;   // text layer displaying conditions
+static TextLayer   *s_hour_layer0;        // text layer displaying hours
+static TextLayer   *s_min_layer0;         // text layer displaying minutes
+static TextLayer   *s_hour_layer1;        // text layer displaying hours
+static TextLayer   *s_min_layer1;         // text layer displaying minutes
 static TextLayer   *s_colon_layer;        // text layer displaying colon
 static TextLayer   *s_date_layer;         // text layer
-static TextLayer   *s_battery_layer;      // text layer displaying battery
+static TextLayer   *s_temperature_layer;  // text layer displaying temperature
 static GFont        s_time_font;          // time display font
-static GFont        s_temperature_font;   // temperature display font
-static GFont        s_battery_font;       // font used to display battery %
+static GFont        s_conditions_font;    // conditions display font
+static GFont        s_temperature_font;   // font used to display temperature
 static GFont        s_date_font;          // date display font
 static GFont        s_colon_font;         // time colon display font
 static GBitmap     *s_background_image;   // background image
@@ -29,8 +29,8 @@ static bool s_configTempF = false;
 static void load_fonts() {
   s_time_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_NHL_VAN_64));
   s_date_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_NHL_VAN_28));
+  s_conditions_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_NHL_VAN_22));
   s_temperature_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_NHL_VAN_22));
-  s_battery_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_NHL_VAN_22));
   s_colon_font = fonts_get_system_font(FONT_KEY_GOTHIC_28_BOLD);
 }
 
@@ -44,21 +44,21 @@ static void create_background_layer() {
 
 // build up the pieces that display the weather information
 static void create_weather_layer() {
-  s_temperature_layer = text_layer_create(GRect(18, 126, 108, 50));
-  text_layer_set_background_color(s_temperature_layer, GColorClear);
-  text_layer_set_text_color(s_temperature_layer, GColorWhite);
-  text_layer_set_text_alignment(s_temperature_layer, GTextAlignmentRight);
-  text_layer_set_font(s_temperature_layer, s_temperature_font);
-  text_layer_set_text(s_temperature_layer, "    ");
+  s_conditions_layer = text_layer_create(GRect(18, 126, 108, 50));
+  text_layer_set_background_color(s_conditions_layer, GColorClear);
+  text_layer_set_text_color(s_conditions_layer, GColorWhite);
+  text_layer_set_text_alignment(s_conditions_layer, GTextAlignmentRight);
+  text_layer_set_font(s_conditions_layer, s_conditions_font);
+  text_layer_set_text(s_conditions_layer, "    ");
 }
 
-static void create_battery_layer() {
-  s_battery_layer = text_layer_create(GRect(22, 126, 30, 50)); //GRect: x,y,w,h
-  text_layer_set_background_color(s_battery_layer, GColorClear);
-  text_layer_set_text_color(s_battery_layer, GColorWhite);
-  text_layer_set_text_alignment(s_battery_layer, GTextAlignmentLeft);
-  text_layer_set_font(s_battery_layer, s_temperature_font);
-  text_layer_set_text(s_battery_layer, "    ");
+static void create_temperature_layer() {
+  s_temperature_layer = text_layer_create(GRect(22, 126, 30, 50)); //GRect: x,y,w,h
+  text_layer_set_background_color(s_temperature_layer, GColorClear);
+  text_layer_set_text_color(s_temperature_layer, GColorWhite);
+  text_layer_set_text_alignment(s_temperature_layer, GTextAlignmentLeft);
+  text_layer_set_font(s_temperature_layer, s_conditions_font);
+  text_layer_set_text(s_temperature_layer, "    ");
 }
 
 // build up the pieces that display the time information
@@ -185,7 +185,7 @@ static void main_window_load(Window *window) {
   create_background_layer();
   create_weather_layer();
   create_date_layer();
-  create_battery_layer();
+  create_temperature_layer();
 
   // Add each layer as a child layer to the Window's root layer
   layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_background_layer));
@@ -194,10 +194,10 @@ static void main_window_load(Window *window) {
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_min_layer0));
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_min_layer1));
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_colon_layer));
+  layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_conditions_layer));
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_temperature_layer));
-  layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_battery_layer));
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_date_layer));
-  layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_battery_layer));
+  layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_temperature_layer));
 }
 
 // Cleanup time data structures
@@ -210,9 +210,9 @@ static void unload_time_layer() {
   fonts_unload_custom_font(s_time_font);
 }
 
-static void unload_battery_layer() {
-  text_layer_destroy(s_battery_layer);
-  fonts_unload_custom_font(s_battery_font);
+static void unload_temperature_layer() {
+  text_layer_destroy(s_temperature_layer);
+  fonts_unload_custom_font(s_temperature_font);
 }
 
 // Cleanup background data structures
@@ -223,8 +223,8 @@ static void unload_background_layer() {
 
 // Cleanup weather data structures
 static void unload_weather_layer() {
-  text_layer_destroy(s_temperature_layer);
-  fonts_unload_custom_font(s_temperature_font);
+  text_layer_destroy(s_conditions_layer);
+  fonts_unload_custom_font(s_conditions_font);
 }
 
 // Cleanup date data structures
@@ -239,7 +239,7 @@ static void main_window_unload(Window *window) {
   unload_background_layer();
   unload_weather_layer();
   unload_date_layer();
-  unload_battery_layer();
+  unload_temperature_layer();
 }
 
 static void update_weather() {
@@ -286,11 +286,11 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
         } else {
           snprintf(temperature_buffer, sizeof(temperature_buffer), "%dC", degC);
         }
-        text_layer_set_text(s_battery_layer, temperature_buffer);
+        text_layer_set_text(s_temperature_layer, temperature_buffer);
         break;
       case KEY_CONDITIONS:
         snprintf(conditions_buffer, sizeof(conditions_buffer), "%s", t->value->cstring);
-        text_layer_set_text(s_temperature_layer, conditions_buffer);
+        text_layer_set_text(s_conditions_layer, conditions_buffer);
         break;
       case KEY_CONFIG_TEMP_UNIT_F:
         s_configTempF = (bool)t->value->int32;

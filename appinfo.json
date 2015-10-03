@@ -1,7 +1,7 @@
 {
-  "uuid": "ed70b15c-e367-3434-eeee-ffff28efb38d",
-  "shortName": "NHL Scoreboard",
-  "longName": "NHL Scoreboard",
+  "uuid": "A635F77E-5BC3-4312-8EAD-C637ECC83940",
+  "shortName": "Hockey Scoreboard",
+  "longName": "Hockey Scoreboard",
   "companyName": "tammyd.ca",
   "versionCode": 1,
   "versionLabel": "1.0",
@@ -14,7 +14,8 @@
     "KEY_CONFIG_TEMP_UNIT_F": 2
   },
   "capabilities": [
-    "location"
+    "location",
+    "configurable"
   ],
   "resources": {
     "media": [
