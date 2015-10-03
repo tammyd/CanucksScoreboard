@@ -20,26 +20,9 @@
   "resources": {
     "media": [
       {
-        "type": "font",
-        "name": "FONT_PERFECT_DOS_48",
-        "file": "perfect-dos-vga.ttf",
-        "compatibility": "2.7"
-      },
-      {
-        "type": "font",
-        "name": "FONT_PERFECT_DOS_20",
-        "file": "perfect-dos-vga.ttf",
-        "compatibility": "2.7"
-      },
-      {
         "file": "images/canucks_background.png",
         "name": "IMAGE_BACKGROUND",
         "type": "png"
-      },
-      {
-        "file": "fonts/NHL Vancouver Canucks.ttf",
-        "name": "FONT_NHL_VAN_24",
-        "type": "font"
       },
       {
         "file": "fonts/NHL Vancouver Canucks.ttf",
