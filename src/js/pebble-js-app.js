@@ -9,7 +9,7 @@ Pebble.addEventListener('showConfiguration', function(e) {
      }).join("&");
   };
 
-  var baseUrl = 'http://tammyd.github.io/NHLScoreboard2/config/nhlscoreboard.html';
+  var baseUrl = 'http://tammyd.github.io/NHLScoreboard/config/nhlscoreboard.html';
   var params = {
     'tempUnitF' : getFromLocalStorage(KEY_CONFIG_TEMP_UNIT_F, false),
   };
