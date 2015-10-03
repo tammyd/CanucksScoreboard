@@ -32,10 +32,10 @@ Pebble.addEventListener('webviewclosed',
       KEY_CONFIG_TEMP_UNIT_F : tempInF,
     },
       function(e) {
-        console.log("Weather info sent to Pebble successfully!");
+        console.log("Sucessfully sent config");
       },
       function(e) {
-        console.log("Error sending weather info to Pebble!");
+        console.log("Error sending config info!");
       }
     );
 

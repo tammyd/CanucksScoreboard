@@ -128,10 +128,8 @@ static void update_date() {
 static void _setNumberLayerAlignment(char *value, TextLayer *layer) {
   int ival = atoi(value);
   if (ival == 1) {
-    APP_LOG(APP_LOG_LEVEL_INFO, "%d Value is 1, centering...", ival);
     text_layer_set_text_alignment(layer, GTextAlignmentCenter);
   } else {
-    APP_LOG(APP_LOG_LEVEL_INFO, "%d Value is NOT 0, lefting...", ival);
     text_layer_set_text_alignment(layer, GTextAlignmentLeft);
   }
 }
@@ -257,8 +255,8 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
   update_time();
   update_date();
 
-  // Get weather update every 30 minutes
-  if(tick_time->tm_min % 30 == 0) {
+  // Get weather update every 10 minutes
+  if(tick_time->tm_min % 10 == 0) {
     update_weather();
   }
 }
