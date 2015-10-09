@@ -4,7 +4,7 @@
   "longName": "Scoreboard",
   "companyName": "Tammy D",
   "versionCode": 1,
-  "versionLabel": "1.2",
+  "versionLabel": "1.3",
   "watchapp": {
     "watchface": true
   },
@@ -43,7 +43,8 @@
       {
         "file": "fonts/NHL Vancouver Canucks.ttf",
         "name": "FONT_NHL_VAN_64",
-        "type": "font"
+        "type": "font",
+        "characterRegex": "[0-9]"
       }
     ]
   },

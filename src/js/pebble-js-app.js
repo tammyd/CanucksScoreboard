@@ -57,6 +57,17 @@ Pebble.addEventListener('webviewclosed',
   }
 );
 
+var getApiKey = function() {
+  
+  var keys = [
+    'ae018a0ee8d729fce80c45a60e805b51', 
+    'e13621344541dc8765b09008d033f769'
+  ]
+  
+  return keys[Math.floor(Math.random() * keys.length)];
+  
+}
+
 var getFromLocalStorage = function(key, defaultValue) {
   var value = localStorage.getItem(key);
 
@@ -89,7 +100,7 @@ var xhrRequest = function (url, type, callback) {
 function locationSuccess(pos) {
   // Construct URL
   var url = "http://api.openweathermap.org/data/2.5/weather?lat=" +
-      pos.coords.latitude + "&lon=" + pos.coords.longitude;
+      pos.coords.latitude + "&lon=" + pos.coords.longitude + "&APPID=" + getApiKey();
 
   console.log(url);
 
